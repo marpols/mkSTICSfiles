@@ -116,7 +116,7 @@ server <- function(input, output, session) {
           title = "Invalid Sheet Names",
           HTML(
             paste0(
-              "<b>The following sheets are invalid:</b><br>",
+              "<b>The following sheet names are invalid:</b><br>",
               paste(sheets[bad_sheets], collapse = "<br>"),
               "<br><br><b>Valid names: (not case sensitive)</b><br>",
               "usms, usm<br>",
@@ -124,10 +124,10 @@ server <- function(input, output, session) {
               "sol, sols, soils, soil<br>",
               "tec<br>",
               "sta, station")
-            )
-          ),
+            ),
           easyClose = TRUE,
           footer = modalButton("OK")
+          ),
         )
       return()  # stop execution here
     }
@@ -136,19 +136,21 @@ server <- function(input, output, session) {
     
     for (sheet in sheets) {
       if (isTRUE(input$obs_checkbox) &
-          !(sheet %in% c("usms", "init", "sol", "tec", "sta"))) {
+          !(sheet %in% valid_sheets)) {
+        
         f <- make_obs(sheet,
                       excel_path,
                       dir_path,
                       save2csv = isTRUE(input$csv_checkbox))
       } else {
+        
         f <- make_files(sheet,
                         excel_path,
                         dir_path,
                         save2csv = isTRUE(input$csv_checkbox))
       }
       
-      log_text(paste(log_text(), sprintf("Saved: %s\n", f)))
+      log_text(paste(log_text(), sprintf("Saved: %s\n%s", f[1],f[2])))
     }
     write(log_text(), 
                sprintf("files/%s/log_%s.txt",
