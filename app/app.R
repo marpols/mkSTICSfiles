@@ -6,10 +6,10 @@
 #
 #    https://shiny.posit.co/
 #
-
+getwd()
 #source files---------------------
-source("src/packages.R")
-source("src/functions.R")
+source("../src/packages.R")
+source("../src/functions.R")
 
 
 ui <- fluidPage(titlePanel("Make STICS Files"),
@@ -50,7 +50,7 @@ server <- function(input, output, session) {
       }
     }
     
-    default_path <- sprintf("files/%s", format(Sys.Date(), "%Y-%m-%d"))
+    default_path <- sprintf("../files/%s", format(Sys.Date(), "%Y-%m-%d"))
     dir_create(default_path)
     default_path
   })
@@ -153,7 +153,7 @@ server <- function(input, output, session) {
       log_text(paste(log_text(), sprintf("Saved: %s\n%s", f[1],f[2])))
     }
     write(log_text(), 
-               sprintf("files/%s/log_%s.txt",
+               sprintf("../files/%s/log_%s.txt",
                        format(Sys.Date(), "%Y-%m-%d"),
                        format(Sys.Date(), "%Y-%m-%d")
                        ),

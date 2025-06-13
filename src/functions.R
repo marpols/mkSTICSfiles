@@ -97,7 +97,7 @@ save_csv <- function(sheet,
                      obs = ""){
   if(save2csv){
     #save excel sheets to individual .csv files
-    csv_dir <- sprintf("files/%s/csv_files/%s", 
+    csv_dir <- sprintf("../files/%s/csv_files/%s", 
                        format(Sys.Date(), "%Y-%m-%d"), 
                        obs)
     dir_create(csv_dir)
@@ -117,8 +117,8 @@ make_obs <- function(sheet,
   #outdir (chr) - path of output directory
   df <- readxl::read_excel(excel.path, sheet = sheet)
   
-  if(outdir ==  sprintf("files/%s",format(Sys.Date(), "%Y-%m-%d"))){
-    fn <- sprintf("files/%s/obs",format(Sys.Date(), "%Y-%m-%d"))
+  if(outdir ==  sprintf("../files/%s",format(Sys.Date(), "%Y-%m-%d"))){
+    fn <- sprintf("../files/%s/obs",format(Sys.Date(), "%Y-%m-%d"))
     create_dir(fn)
     fn <- file.path(fn,sprintf("%s.obs"))
   } else {
