@@ -3,7 +3,7 @@ packages <- c("simET", "masscor", "SciViews")
 
 
 #Brisson and Perrier - 1991
-aclim <- list(1 = 20, 2 = 14, )
+aclim <- list("1" = 20, "2" = 14)
 
 Ta <-  14.6 #air temperature (K)
 Ts <- 12 #surface temperature (K)

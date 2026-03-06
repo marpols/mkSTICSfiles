@@ -6,24 +6,23 @@
 #
 #    https://shiny.posit.co/
 #
-getwd()
-#source files---------------------
-source("../src/packages.R")
-source("../src/functions.R")
+
+lapply(list.files("src", full.names = T), source)
+
 
 
 ui <- fluidPage(titlePanel("Make STICS Files"),
                 sidebarLayout(
                   sidebarPanel(
-                    checkboxInput("obs_checkbox", "Make .obs Files", value = FALSE),
                     fileInput("excel_file", "Choose Excel File", accept = ".xlsx"),
                     uiOutput("sheet_ui_block"),
                     # dynamically generated
                     shinyDirButton("output_dir", "Choose Output Directory", "Select"),
                     verbatimTextOutput("dir_text"),
+                    checkboxInput("type_checkbox", "Direct Input", value = FALSE),
                     checkboxInput("csv_checkbox", "Save CSV copies", value = FALSE),
                     actionButton("run_btn", "Generate Files"),
-                    actionButton("exit_btn", "Exit App")
+                    actionButton("exit_btn", "End Program")
                   ),
                   mainPanel(verbatimTextOutput("log"))
                 ))
@@ -58,15 +57,15 @@ server <- function(input, output, session) {
   #display chosen output directory
   shinyDirChoose(input, "output_dir", roots = volumes)
   output$dir_text <- renderText({
-    dir_path <- output_dir()
-    paste("Output directory:", dir_path)
+    outdir <- output_dir()
+    paste("Output directory:", outdir)
   })
   
   # Dynamically list sheets
   observeEvent(input$excel_file, {
     req(input$excel_file)
     sheet_list <- readxl::excel_sheets(input$excel_file$datapath)
-    sheets(sheet_list)
+    sheets(sheet_list[-6])
     
     output$sheet_ui_block <- renderUI({
       tagList(
@@ -103,7 +102,7 @@ server <- function(input, output, session) {
     
     excel_path <- input$excel_file$datapath
     sheets <- input$selected_sheets
-    dir_path <- output_dir()
+    outdir <- output_dir()
     
 
     
@@ -122,8 +121,8 @@ server <- function(input, output, session) {
               "usms, usm<br>",
               "init, ini<br>",
               "sol, sols, soils, soil<br>",
-              "tec<br>",
-              "sta, station")
+              "management, tec<br>",
+              "sta, stations")
             ),
           easyClose = TRUE,
           footer = modalButton("OK")
@@ -140,14 +139,14 @@ server <- function(input, output, session) {
         
         f <- make_obs(sheet,
                       excel_path,
-                      dir_path,
-                      save2csv = isTRUE(input$csv_checkbox))
+                      outdir,
+                      savecsv = isTRUE(input$csv_checkbox))
       } else {
         
         f <- make_files(sheet,
                         excel_path,
-                        dir_path,
-                        save2csv = isTRUE(input$csv_checkbox))
+                        outdir,
+                        savecsv = isTRUE(input$csv_checkbox))
       }
       
       log_text(paste(log_text(), sprintf("Saved: %s\n%s", f[1],f[2])))
