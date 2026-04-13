@@ -1,20 +1,15 @@
-#Install and Apply Packages
+packages <- c("readxl", "shiny", "lubridate", "fs", "shinyFiles","data.table",
+              "dplyr", "SticsRFiles")
 
-if (!require("SticsRFiles")){
-  devtools::install_github("SticsRPacks/SticsRFiles@*release")
-}
-if (!require("dplyr")){
-  install.packages("dplyr")
-}
-if (!require("readxl")){
-  install.packages("readxl")
-}
-if (!require("shiny")){
-  install.packages("shiny")
-}
-if (!require("fs")){
-  install.packages("fs")
-}
-if (!require("shinyFiles")){
-  install.packages("shinyFiles")
-}
+invisible(lapply(packages, function(p) {
+  if (!(p %in% installed.packages())) {
+    if (p == "SticsRPacks") {
+      devtools::install_github("SticsRPacks/SticsRPacks@*release")
+      devtools::install_github("SticsRPacks/CroPlotR@*release")
+    } else {
+      install.packages(p, character.only = T)
+    }
+  }
+  library(p, character.only = TRUE)
+}))
+

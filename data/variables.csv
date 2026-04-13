@@ -1,115 +1,120 @@
-﻿variable,STICS variable,file,value
-year,ian,,
-month,mo,,
-day,jo,,
-doy,jul,,
-tillage_date,jultrav,tec,
-tillage_depth,proftrav,tec,
-planting_date,iplt0,tec,
-planting_depth,profsem,tec,
-plants_per_m2,densitesem,tec,
-emergence,ilev,tec,
-flowering,iflo,tec,
-maturity,imat,tec,
-application_date,julapN,tec,
-kg_N_per_ha,doseN,tec,
-fert_type,engrais,tec,
-fert_location,codlocferti,tec,
-fert_depth,locferti,tec,
-harvest_date,irec,tec,
-latest_harvest_date,irecbutoir,tec,
-irrigation_efficiency,effirr,tec,
-irrigation_location,codlocirrig,tec,
-irrigation_depth,locirrig,tec,
-soil_profile_name,Soil_name,sol,
-albedo,albedo,sol,
-impermeable_lyr,profimper,sol,
-spacing,ecartdrain,sol,
-hydraulic_conductivity,ksol,sol,
-depth,profdrain,sol,
-pH,pH,sol,
-%_clay_1,argi,sol,
-SON,norg,sol,
-CN_ratio,CsurNsol,sol,
-carbonate,calc,sol,
-station_name,Sta_name,sta,
-latitude,,sta,
-PET_calculation,codeetp,sta,
-usm_name,,usms,
-simulation_start,datedebut,usms,
-simulation_end,datefin,usms,
-management_file_name,ftec,usms,
-soil_profile_name,nomsol,usms,
-weather_station_name,fclim,usms,
-plant_file,fplt,usms,
-Ini_name,finit,usms,
-irrigation_date_1,julapl_1,tec,
-amount_1,dosel_1,tec,
-irrigation_date_2,julapl_2,tec,
-amount_2,dosel_2,tec,
-irrigation_date_3,julapl_3,tec,
-amount_3,dosel_3,tec,
-irrigation_date_4,julapl_4,tec,
-amount_4,dosel_4,tec,
-irrigation_date_5,julapl_5,tec,
-amount_5,dosel_5,tec,
-irrigation_date_6,julapl_6,tec,
-amount_6,dosel_6,tec,
-irrigation_date_7,julapl_7,tec,
-amount_7,dosel_7,tec,
-irrigation_date_8,julapl_8,tec,
-amount_8,dosel_8,tec,
-irrigation_date_9,julapl_9,tec,
-amount_9,dosel_9,tec,
-irrigation_date_10,julapl_10,tec,
-amount_10,dosel_10,tec,
-irrigation_date_11,julapl_11,tec,
-amount_11,dosel_11,tec,
-irrigation_date_12,julapl_12,tec,
-amount_12,dosel_12,tec,
-irrigation_date_13,julapl_13,tec,
-amount_13,dosel_13,tec,
-irrigation_date_14,julapl_14,tec,
-amount_14,dosel_14,tec,
-irrigation_date_15,julapl_15,tec,
-amount_15,dosel_15,tec,
-thickness_1,epc_1,sol,
-BD_1,DAF_1,sol,
-FC_1,HCCF_1,sol,
-WP_1,HMINF_1,sol,
-initial_NO3_1,NO3initf_1,ini,
-initial_NH4_1,NH4initf_1,ini,
-pebble_content_1,cailloux_1,sol,
-pebble_type_1,typecailloux_1,sol,
-thickness_2,epc_2,sol,
-BD_2,DAF_2,sol,
-FC_2,HCCF_2,sol,
-WP_2,HMINF_2,sol,
-initial_NO3_2,NO3initf_2,ini,
-initial_NH4_2,NH4initf_2,ini,
-pebble_content_2,cailloux_2,sol,
-pebble_type_2,typecailloux_2,sol,
-thickness_3,epc_3,sol,
-BD_3,DAF_3,sol,
-FC_3,HCCF_3,sol,
-WP_3,HMINF_3,sol,
-initial_NO3_3,NO3initf_3,ini,
-initial_NH4_3,NH4initf_3,ini,
-pebble_content_3,cailloux_3,sol,
-pebble_type_3,typecailloux_3,sol,
-thickness_4,epc_4,sol,
-BD_4,DAF_4,sol,
-FC_4,HCCF_4,sol,
-WP_4,HMINF_4,sol,
-initial_NO3_4,NO3initf_4,ini,
-initial_NH4_4,NH4initf_4,ini,
-pebble_content_4,cailloux_4,sol,
-pebble_type_4,typecailloux_4,sol,
-thickness_5,epc_5,sol,
-BD_5,DAF_5,sol,
-FC_5,HCCF_5,sol,
-WP_5,HMINF_5,sol,
-initial_NO3_5,NO3initf_5,ini,
-initial_NH4_5,NH4initf_5,ini,
-pebble_content_5,cailloux_5,sol,
-pebble_type_5,typecailloux_5,sol,
+﻿variable,STICS variable,file,unit,description
+year,ian,obs,,
+month,mo,obs,,
+day,jo,obs,,
+doy,jul,obs,,Day of year
+tillage_date,jultrav,tec,doy,
+tillage_depth,proftrav,tec,cm,Maximum depth affected by soil tillage
+planting_date,iplt0,tec,doy,Date of sowing
+planting_depth,profsem,tec,cm,Depth of sowing
+plants_per_m2,densitesem,tec,plants/m2,Plant sowing density
+emergence,ilev,tec,doy,Date of emergence
+flowering,iflo,tec,doy,Day of anthesis
+maturity,imat,tec,doy,Day when maturity stage is reached
+application_date,julapN,tec,doy,Date of fertilizer application
+kg_N_per_ha,doseN,tec,kg/ha/day,Daily amount of N added through fertilizers
+fert_type,engrais,tec,"code, 1 to 8","Fertilizer type (1=ammonium nitrate, 2=UAN solution, 3=urea, 4=anhydrous ammonia, 5=ammonium sulfate, 6=ammonium phosphate, 7=calcium nitrate, 8= fixed efficiency fertiliser)"
+fert_location,codlocferti,tec,"code, 1 to 2","Option to define localized fertilisation: 1 = at soil surface, 2 = deeper in the soil"
+fert_depth,locferti,tec,cm,Soil depth at which fertiliser is applied
+harvest_date,irec,tec,doy,Date of harvest
+harvest_end,irecbutoir,tec,doy,Latest date of harvest (imposed if the crop cycle is not finished at this date)
+irrigation_efficiency,effirr,tec,0-1,Irrigation efficiency
+irrigation_location,codlocirrig,tec,"code, 1 to 3","Option to define localized irrigation: 1= above the foliage, 2= below the foliage above the soil, 3 = in the soil"
+autoirr_depth,locirrig,tec,cm,Soil depth at which irrigation is applied
+autoirr_start,datedeb_irrigauto,tec,doy,Starting date of automatic irrigations
+autoirr_end,datefin_irrigauto,tec,doy,Ending date of automatic irrigations
+soil_profile_name,Soil_name,sol,str,Name of soil profile
+albedo,albedo,sol,ND,Albedo of the bare dry soil
+impermeable_lyr,profimper,sol,cm,Upper depth of the impermeable layer (from soil surface)
+spacing,ecartdrain,sol,cm,Spacing between drains
+hydraulic_conductivity,ksol,sol,mm/day,Hydraulic conductivity
+depth,profdrain,sol,cm,Depth of the drains
+pH,pH,sol,,pH of first soil layer
+%_clay_1,argi,sol,%,Clay content
+SON_1,norg,sol,%,"Soil organic N content in the first soil layer (constant down to the depth profhum, dry soil)"
+CN_ratio,CsurNsol0,sol,g C/g N,Initial C to N ratio of soil humus
+carbonate,calc,sol,%,Total carbonate content
+station_name,Sta_name,sta,str,Weather station name
+latitude,latitude,sta,degree,Latitude of the site
+PET_calculation,codeetp,sta,"code, 1 to 4","Option to calculate PET: 1 = forced Penman, 2 = calculated Penman, 3= Shuttleworth & Wallace, 4 = Priestley & Taylor"
+usm_name,usm_name,usms,str,name of simulation
+simulation_start,datedebut,usms,doy,Starting date of simulation
+simulation_end,datefin,usms,doy,Ending date of simulation
+management_file_name,ftec,usms,str,Management file name
+soil_profile_name,nomsol,usms,str,Name of soil profile
+weather_station_name,fclim,usms,str,Weather station file name
+plant_file,fplt,usms,str,Plant file name
+Ini_name,finit,usms,str,Initialization file name
+irrigation_date_1,julapl_1,tec,doy,Date of Irrigation
+amount_1,dosel_1,tec,mm/day,Daily amount of irrigation water
+irrigation_date_2,julapl_2,tec,doy,Date of Irrigation
+amount_2,dosel_2,tec,mm/day,Daily amount of irrigation water
+irrigation_date_3,julapl_3,tec,doy,Date of Irrigation
+amount_3,dosel_3,tec,mm/day,Daily amount of irrigation water
+irrigation_date_4,julapl_4,tec,doy,Date of Irrigation
+amount_4,dosel_4,tec,mm/day,Daily amount of irrigation water
+irrigation_date_5,julapl_5,tec,doy,Date of Irrigation
+amount_5,dosel_5,tec,mm/day,Daily amount of irrigation water
+irrigation_date_6,julapl_6,tec,doy,Date of Irrigation
+amount_6,dosel_6,tec,mm/day,Daily amount of irrigation water
+irrigation_date_7,julapl_7,tec,doy,Date of Irrigation
+amount_7,dosel_7,tec,mm/day,Daily amount of irrigation water
+irrigation_date_8,julapl_8,tec,doy,Date of Irrigation
+amount_8,dosel_8,tec,mm/day,Daily amount of irrigation water
+irrigation_date_9,julapl_9,tec,doy,Date of Irrigation
+amount_9,dosel_9,tec,mm/day,Daily amount of irrigation water
+irrigation_date_10,julapl_10,tec,doy,Date of Irrigation
+amount_10,dosel_10,tec,mm/day,Daily amount of irrigation water
+irrigation_date_11,julapl_11,tec,doy,Date of Irrigation
+amount_11,dosel_11,tec,mm/day,Daily amount of irrigation water
+irrigation_date_12,julapl_12,tec,doy,Date of Irrigation
+amount_12,dosel_12,tec,mm/day,Daily amount of irrigation water
+irrigation_date_13,julapl_13,tec,doy,Date of Irrigation
+amount_13,dosel_13,tec,mm/day,Daily amount of irrigation water
+irrigation_date_14,julapl_14,tec,doy,Date of Irrigation
+amount_14,dosel_14,tec,mm/day,Daily amount of irrigation water
+irrigation_date_15,julapl_15,tec,doy,Date of Irrigation
+amount_15,dosel_15,tec,mm/day,Daily amount of irrigation water
+thickness_1,epc_1,sol,cm,Thickness of the first soil layer
+BD_1,DAF_1,sol,g/cm3,Bulk density of the first soil layer
+FC_1,HCCF_1,sol,g/g %,"Gravimetric water content at field capacity of the first soil layer (in fine earth, dry soil)"
+WP_1,HMINF_1,sol,g/g %,"Gravimetric water content at wilting point of the first soil layer (in fine earth, dry soil)"
+initial_NO3_1,NO3initf_1,ini,kg N/ha,Initial amount of NO3-N in the first soil layer (in fine earth)
+initial_NH4_1,NH4initf_1,ini,kg N/ha,Initial amount of NH4-N in the first soil layer (in fine earth)
+pebble_content_1,cailloux_1,sol,%,Volumetric content of pebbles in the first soil layer
+pebble_type_1,typecailloux_1,sol,"code, 1 to 9","Pebbles type of the first soil layer: 1 = Beauce limestone1, 2 = Beauce limestone, 3 = Lutetian limestone, 4 = Lutetian Brackish marl and limestone, 5 = morainic gravels, 6 = unweathered flint, sandstone or granite, 7 = weathered granite, 8 = Jurassic limestone 9 = Pebbles from Magneraud"
+thickness_2,epc_2,sol,cm,Thickness of the second soil layer
+BD_2,DAF_2,sol,g/cm3,Bulk density of the second soil layer
+FC_2,HCCF_2,sol,g/g %,"Gravimetric water content at field capacity of the second soil layer (in fine earth, dry soil)"
+WP_2,HMINF_2,sol,g/g %,"Gravimetric water content at wilting point of the second soil layer (in fine earth, dry soil)"
+initial_NO3_2,NO3initf_2,ini,kg N/ha,Initial amount of NO3-N in the second soil layer (in fine earth)
+initial_NH4_2,NH4initf_2,ini,kg N/ha,Initial amount of NH4-N in the second soil layer (in fine earth)
+pebble_content_2,cailloux_2,sol,%,Volumetric content of pebbles in the second soil layer
+pebble_type_2,typecailloux_2,sol,"code, 1 to 9","Pebbles type of the second soil layer: 1 = Beauce limestone1, 2 = Beauce limestone, 3 = Lutetian limestone, 4 = Lutetian Brackish marl and limestone, 5 = morainic gravels, 6 = unweathered flint, sandstone or granite, 7 = weathered granite, 8 = Jurassic limestone 9 = Pebbles from Magneraud"
+thickness_3,epc_3,sol,cm,Thickness of the third soil layer
+BD_3,DAF_3,sol,g/cm3,Bulk density of the third soil layer
+FC_3,HCCF_3,sol,g/g %,"Gravimetric water content at field capacity of the third soil layer (in fine earth, dry soil)"
+WP_3,HMINF_3,sol,g/g %,"Gravimetric water content at wilting point of the third soil layer (in fine earth, dry soil)"
+initial_NO3_3,NO3initf_3,ini,kg N/ha,Initial amount of NO3-N in the third soil layer (in fine earth)
+initial_NH4_3,NH4initf_3,ini,kg N/ha,Initial amount of NH4-N in the third soil layer (in fine earth)
+pebble_content_3,cailloux_3,sol,%,Volumetric content of pebbles in the third soil layer
+pebble_type_3,typecailloux_3,sol,"code, 1 to 9","Pebbles type of the third soil layer: 1 = Beauce limestone1, 2 = Beauce limestone, 3 = Lutetian limestone, 4 = Lutetian Brackish marl and limestone, 5 = morainic gravels, 6 = unweathered flint, sandstone or granite, 7 = weathered granite, 8 = Jurassic limestone 9 = Pebbles from Magneraud"
+thickness_4,epc_4,sol,cm,Thickness of the fourth soil layer
+BD_4,DAF_4,sol,g/cm3,Bulk density of the fourth soil layer
+FC_4,HCCF_4,sol,g/g %,"Gravimetric water content at field capacity of the fourth soil layer (in fine earth, dry soil)"
+WP_4,HMINF_4,sol,g/g %,"Gravimetric water content at wilting point of the fourth soil layer (in fine earth, dry soil)"
+initial_NO3_4,NO3initf_4,ini,kg N/ha,Initial amount of NO3-N in the fourth soil layer (in fine earth)
+initial_NH4_4,NH4initf_4,ini,kg N/ha,Initial amount of NH4-N in the fourth soil layer (in fine earth)
+pebble_content_4,cailloux_4,sol,%,Volumetric content of pebbles in the fourth soil layer
+pebble_type_4,typecailloux_4,sol,"code, 1 to 9","Pebbles type of the fourth soil layer: 1 = Beauce limestone1, 2 = Beauce limestone, 3 = Lutetian limestone, 4 = Lutetian Brackish marl and limestone, 5 = morainic gravels, 6 = unweathered flint, sandstone or granite, 7 = weathered granite, 8 = Jurassic limestone 9 = Pebbles from Magneraud"
+thickness_5,epc_5,sol,cm,Thickness of the fifth soil layer
+BD_5,DAF_5,sol,g/cm3,Bulk density of the fifth soil layer
+FC_5,HCCF_5,sol,g/g %,"Gravimetric water content at field capacity of the fifth soil layer (in fine earth, dry soil)"
+WP_5,HMINF_5,sol,g/g %,"Gravimetric water content at wilting point of the fifth soil layer (in fine earth, dry soil)"
+initial_NO3_5,NO3initf_5,ini,kg N/ha,Initial amount of NO3-N in the fifth soil layer (in fine earth)
+initial_NH4_5,NH4initf_5,ini,kg N/ha,Initial amount of NH4-N in the fifth soil layer (in fine earth)
+pebble_content_5,cailloux_5,sol,%,Volumetric content of pebbles in the fifth soil layer
+pebble_type_5,typecailloux_5,sol,"code, 1 to 9","Pebbles type  of the fifth soil layer: 1 = Beauce limestone1, 2 = Beauce limestone, 3 = Lutetian limestone, 4 = Lutetian Brackish marl and limestone, 5 = morainic gravels, 6 = unweathered flint, sandstone or granite, 7 = weathered granite, 8 = Jurassic limestone 9 = Pebbles from Magneraud"
+average_windspeed,,sta,m/s,Used to calculate aclim
+denitrification,codedenit,sol,"code, 1 to 2","Option to activate the calculation of denitrification model: 1 = yes, 2 = no"
+nitrification,codenitrif,sol,"code, 1 to 2","Option to activate the nitrification model: 1 = yes, 2 = no"

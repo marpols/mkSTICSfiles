@@ -6,20 +6,26 @@
 #
 #    https://shiny.posit.co/
 #
+print(getwd())
+# list.files()
+library(shiny)
+library(shinyFiles)
+library(fs)
+lapply(list.files("../src", full.names = T), source)
+args <- commandArgs(trailingOnly = FALSE)
 
-lapply(list.files("src", full.names = T), source)
-
+source("../data/globals.R")
 
 
 ui <- fluidPage(titlePanel("Make STICS Files"),
                 sidebarLayout(
                   sidebarPanel(
                     fileInput("excel_file", "Choose Excel File", accept = ".xlsx"),
+                    checkboxInput("type_checkbox", "Direct Input Spreadsheet", value = FALSE),
                     uiOutput("sheet_ui_block"),
                     # dynamically generated
                     shinyDirButton("output_dir", "Choose Output Directory", "Select"),
                     verbatimTextOutput("dir_text"),
-                    checkboxInput("type_checkbox", "Direct Input", value = FALSE),
                     checkboxInput("csv_checkbox", "Save CSV copies", value = FALSE),
                     actionButton("run_btn", "Generate Files"),
                     actionButton("exit_btn", "End Program")
@@ -49,7 +55,7 @@ server <- function(input, output, session) {
       }
     }
     
-    default_path <- sprintf("../files/%s", format(Sys.Date(), "%Y-%m-%d"))
+    default_path <- sprintf("../output/%s", format(Sys.Date(), "%Y-%m-%d"))
     dir_create(default_path)
     default_path
   })
@@ -152,7 +158,7 @@ server <- function(input, output, session) {
       log_text(paste(log_text(), sprintf("Saved: %s\n%s", f[1],f[2])))
     }
     write(log_text(), 
-               sprintf("../files/%s/log_%s.txt",
+               sprintf("../output/%s/log_%s.txt",
                        format(Sys.Date(), "%Y-%m-%d"),
                        format(Sys.Date(), "%Y-%m-%d")
                        ),
