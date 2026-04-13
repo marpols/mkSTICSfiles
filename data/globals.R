@@ -5,10 +5,12 @@ valid_sheets <- c("usms","usm",
                    "sta", "stations",
                    "obs", "observations")
 
+
 sheet_pairs <- data.frame(sheets = c("management", "soils", "soils", "stations", "usms", "observations"),
                           STICSfiles = c("tec", "sol", "ini", "sta", "usms", "obs"))
 
 variables <- readRDS("../data/variables.RDS")
+
 
 template <- "files/templates/direct-input-template.xlsx"
 

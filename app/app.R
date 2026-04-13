@@ -6,15 +6,13 @@
 #
 #    https://shiny.posit.co/
 #
-print(getwd())
-# list.files()
+
 library(shiny)
 library(shinyFiles)
 library(fs)
 lapply(list.files("../src", full.names = T), source)
-args <- commandArgs(trailingOnly = FALSE)
-
 source("../data/globals.R")
+
 
 
 ui <- fluidPage(titlePanel("Make STICS Files"),
