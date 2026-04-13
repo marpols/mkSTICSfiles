@@ -77,16 +77,19 @@ make_files <- function(sheet,
   
 }
 
-pop_template <- function(sheet,
+get_values <- function(sheet,
                             excel_path,
-                            outdir,
+                            outdir
 ){
   
-  df <- read_excel(excel_path, sheet = sheet)                              
-  colnames(df) <- as.character(unlist(df[1,]))
-  df <- df[-1, ]
+  xl_sheet <- read_sheet(sheet, excel_path) |>
+    convert_dates() |>
+    get_code_choice()
   
-  temp <- open_template(sheet)
+  temp <- read.csv("data/var-values.csv")
+  
+  
+  
   
   
 }

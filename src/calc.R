@@ -1,12 +1,4 @@
-convert_sm <- function(value, bd){
-  return(value * bd)
-}
-
-convert_mgKg <- function(value, depth, bd){
-  return((value * depth * bd)/10)
-}
-
-calc_som <- function(soc, van_bemmelen = 1.724){
+calc_som <- function(soc, van_bemmelen = vbf){
   return(soc * van_bemmelen)
 }
 
@@ -86,4 +78,11 @@ calc_q0 <- function(sand, clay){
   } else{
     return(8 + 0.08 * clay)
   }
+}
+
+set_vbf <- function(value = 1.724){
+  
+  vbf <<- value
+  sprintf("Van Bemmelen factor set to %.3f", value)
+  
 }
