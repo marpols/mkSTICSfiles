@@ -1,88 +1,106 @@
-calc_som <- function(soc, van_bemmelen = vbf){
-  return(soc * van_bemmelen)
-}
+calc_soils <- function(df){
 
-calc_orgN <- function(soc, cn_ratio, inorganic_N){
-  return((soc/cn_ratio) - inorganic_N)
-}
-
-calc_fc <- function(sand, clay, som){
+  #layer 1 only
   
-  theta_33t <- calc_theta33(sand, clay, som)
-  
-  return((theta_33t + (1.283 * theta_33t^2 - 0.374 * theta_33t - 0.15))*100)
-}
-
-calc_wp <- function(sand, clay, som){
-  
-  theta_1500t <- calc_theta1500(sand, clay, som)
-  
-  return((theta_1500t + (0.14 * theta_1500t - 0.02))*100) 
-}
-
-calc_bd <- function(sand, clay, som){
-  
-  #porosity
-  A <- 0.278 * (sand/100) + 
-    0.034 * (clay/100) +
-    0.022 * som -
-    0.018 * (sand/100) * som -
-    0.027 * (clay/100) * som - 
-    0.584 * (sand/100) * (clay/100) + 0.078
-  
-  #adjusted porosity
-  B <- A + (0.636 * A - 0.107)
-  
-  #saturation porosity + moisture
-  spm <- B + calc_fc(sand, clay, som)/100
-  
-  #sand adjustment factor
-  saf <- -0.097 * (sand/100) + 0.043
-  
-  #sand adjusted saturation
-  sas <- spm + saf
-  
-  return((1 - sas) * 2.65)
-  
-}
-
-calc_theta33 <- function(sand, clay, som){
-    
-  return(
-    -0.251 * (sand / 100) +
-      0.195 * (clay / 100) +
-      0.011 * som -
-      0.006 * (sand / 100) * som -
-      0.027 * (clay / 100) * som +
-      0.452 * (sand / 100) * (clay / 100) + 0.299
-  )
-}
-
-calc_theta1500 <- function(sand, clay, som){
-  return(
-    -0.024 * (sand / 100) +
-      0.478 * (clay / 100) +
-      0.006 * som -
-      0.005 * (sand / 100) * som -
-      0.013 * (clay / 100) * som +
-      0.068 * (sand / 100) * (clay / 100) + 0.031
-  )
-}
-
-calc_q0 <- function(sand, clay){
-  
-  if (clay > 50){
-    return(5 + 0.06 * (100 - clay))
-  } else if (sand > 80){
-    return(5 + 0.15 * (100 - sand))
-  } else{
-    return(8 + 0.08 * clay)
+  #check CN ratio
+  cells <- value_is_empty(df, "CN_ratio")
+  if(!(length(cells) == 0)){
+    SOC <- df[cells,"SOC_1"]
+    SON <- df[cells,"SON_1"]
+    inorganic_N <- df[cells,"inorganic_N"]
+    df[cells,"CN_ratio"] <- calc_CNratio(SOC, SON, inorganic_N)
   }
-}
+  
+  #check orgN
+  cells <- value_is_empty(df, "SON_1")
+  if(!(length(cells) == 0)){
+    SOC <- df[cells,"SOC_1"]
+    cn_ratio <- df[cells,"CN_ratio"]
+    inorganic_N <- df[cells,"inorganic_N"]
+    df[cells,"SON_1"] <- calc_orgN(SOC, cn_ratio, inorganic_N)
+  }
+  
+  #all layers
+  values <- c("SOM","BD","FC","WP")
+  
+  for(n in seq(1,5,1)){
+    
+    SOC <- df[cells,sprintf("SOC_%d",n)]
+    sand <- df[cells,sprintf("%%_sand_%d",n)]
+    clay <- df[cells,sprintf("%%_clay_%d",n)]
+    som <- df[cells,sprintf("SOM_%d",n)]
+    
+    for(v in values){
+    
+      column <- sprintf("%s_%d",v,n)
+      cells <- value_is_empty(df, column)
+  
+      if(!(length(cells) == 0)){
+        if(v == "SOM"){
+          func <- calc_som
+          args <- list(SOC)
+        } else if(v == "BD"){
+          func <- calc_bd
+          args <- list(sand, clay, som)
+        } else if (v == "FC"){
+          func <- calc_fc
+          args <- list(sand, clay, som)
+        } else if (v == "WP"){
+          func <- calc_wp
+          args <- list(sand, clay, som)
+        }
+        df[cells,column] <- do.call(func, args)
+        
+        }
+    }
+  }
+  l1 <- seq(7, 26, 1)
+  l2 <- seq(27, 41, 1)
+  l3 <- seq(42, 56, 1)
+  l4 <- seq(57, 71, 1)
+  l5 <- seq(72, 86, 1)
+  
+  #check fc, wp units
+  cells_sm <- unit_check(df, "% V/V")
+  
+  #check initial NO3, NH4 units
+  cells_N <- unit_check(df, "mg N/ha.")
+  
+  bds <- c(11, 30, 45, 60, 75)
+  ts <- c(7, 27, 42, 57, 72)
+  ls  <- list(l1, l2, l3, l4, l5)
+  
+  for (i in seq_along(ls)) {
+    l  <- ls[[i]]
+    bd <- bds[[i]]
+    t <- ts[[i]]
+    
+    for (u in c("% V/V", "mg N/ha.")){
+      cells <- unit_check(df, u)
+      idx <- which(cells[, 2] %in% l)
+      cells_idx <- as.matrix(cells[idx[1]:idx[2], , drop = FALSE])
+      
+      if(u == "% V/V"){
+        func <- convert_sm
+        args <- list(as.numeric(df[cells_idx]),
+                     df[cells_idx[, 1], bd])
+        new_unit <- "% g/g"
+      } else if (u == "mg N/ha."){
+        func <- convert_mgKg
+        args <- list(as.numeric(df[cells_idx]),
+                     df[cells_idx[, 1], t],
+                     df[cells_idx[, 1], bd])
+        new_unit <- "kg N/ha."
+      }
+      
+      df[cells_idx] <- do.call(func, args)
+      
+      cells[, 2] <- cells[, 2] + 1
+      df[cells] <- new_unit
+    }
+  }
+  
+  return(df)
 
-set_vbf <- function(value = 1.724){
-  
-  vbf <<- value
-  sprintf("Van Bemmelen factor set to %.3f", value)
-  
 }
+  

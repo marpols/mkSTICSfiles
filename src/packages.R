@@ -1,4 +1,4 @@
-packages <- c("readxl", "shiny", "lubridate", "fs", "shinyFiles","data.table",
+packages <- c("readxl", "openxlsx", "shiny", "lubridate", "fs", "shinyFiles","data.table",
               "dplyr", "SticsRFiles")
 
 invisible(lapply(packages, function(p) {

@@ -19,7 +19,8 @@ ui <- fluidPage(titlePanel("Make STICS Files"),
                 sidebarLayout(
                   sidebarPanel(
                     fileInput("excel_file", "Choose Excel File", accept = ".xlsx"),
-                    checkboxInput("type_checkbox", "Direct Input Spreadsheet", value = FALSE),
+                    checkboxInput("type_checkbox", "calculate q0", value = FALSE),
+                    checkboxInput("type_checkbox", "calculate aclim", value = FALSE),
                     uiOutput("sheet_ui_block"),
                     # dynamically generated
                     shinyDirButton("output_dir", "Choose Output Directory", "Select"),
@@ -68,6 +69,18 @@ server <- function(input, output, session) {
   # Dynamically list sheets
   observeEvent(input$excel_file, {
     req(input$excel_file)
+    
+    file_name <- input$excel_file$name
+    txt <- sprintf("From: %s\n", file_name)
+    log_text(txt)
+    write(sprintf("From: %s", file_name),
+          sprintf("../output/%s/log_%s.txt",
+                  format(Sys.Date(), "%Y-%m-%d"),
+                  format(Sys.Date(), "%Y-%m-%d")
+          ),
+          append = T
+          )
+          
     sheet_list <- readxl::excel_sheets(input$excel_file$datapath)
     sheets(sheet_list[-6])
     
@@ -135,7 +148,6 @@ server <- function(input, output, session) {
       return()  # stop execution here
     }
     
-    log_text(paste(log_text(), sprintf("From: %s\n", input$excel_file$name )))
     
     for (sheet in sheets) {
       if (isTRUE(input$obs_checkbox) &
@@ -146,22 +158,67 @@ server <- function(input, output, session) {
                       outdir,
                       savecsv = isTRUE(input$csv_checkbox))
       } else {
-        
-        f <- make_files(sheet,
-                        excel_path,
-                        outdir,
-                        savecsv = isTRUE(input$csv_checkbox))
+        f <- tryCatch(
+          withCallingHandlers(
+            make_files(sheet, excel_path, outdir, savecsv = isTRUE(input$csv_checkbox)),
+            warning = function(w) {
+              showNotification(sprintf("%s: %s", sheet, w$message),
+                               type = "warning")
+              write(
+                sprintf(
+                  "Warning sheet '%s': %s - %s",
+                  sheet,
+                  w$message,
+                  timestamp(
+                    prefix = "",
+                    suffix = "",
+                    quiet = TRUE
+                  )
+                ),
+                sprintf(
+                  "../output/%s/log_%s.txt",
+                  format(Sys.Date(), "%Y-%m-%d"),
+                  format(Sys.Date(), "%Y-%m-%d")
+                ),
+                append = T
+              )
+              invokeRestart("muffleWarning")
+            }
+          ),
+          error = function(e) {
+            showNotification(sprintf("%s: %s", sheet, e$message), type = "error")
+            write(
+              sprintf(
+                "ERROR sheet '%s': %s - %s",
+                sheet,
+                e$message,
+                timestamp(
+                  prefix = "",
+                  suffix = "",
+                  quiet = TRUE
+                )
+              ),
+              sprintf(
+                "../output/%s/log_%s.txt",
+                format(Sys.Date(), "%Y-%m-%d"),
+                format(Sys.Date(), "%Y-%m-%d")
+              ),
+              append = T
+            )
+            return(NULL)
+          }
+        )
       }
       
-      log_text(paste(log_text(), sprintf("Saved: %s\n%s", f[1],f[2])))
+      log_text(paste(log_text(), sprintf("Saved: %s %s\n", f[1],f[2])))
+      write(sprintf("Saved: %s %s", f[1],f[2]),
+            sprintf("../output/%s/log_%s.txt",
+                    format(Sys.Date(), "%Y-%m-%d"),
+                    format(Sys.Date(), "%Y-%m-%d")
+            ),
+            append = T
+      )
     }
-    write(log_text(), 
-               sprintf("../output/%s/log_%s.txt",
-                       format(Sys.Date(), "%Y-%m-%d"),
-                       format(Sys.Date(), "%Y-%m-%d")
-                       ),
-          append = T
-    )
   }
   )
   

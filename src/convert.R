@@ -3,9 +3,15 @@ date_to_jul <- function(value){
   return(format(date, "%j"))
 }
 
-convert_dates <- function(df){
+convert_dates <- function(df, sheet){
   cells <- is_excel_date(df)
-  df[cells] <- date_to_jul(as.numeric(df[cells]))
+  result <- tryCatch({
+    df[cells] <- date_to_jul(as.numeric(df[cells]))
+    },
+    error = function(e){
+      message("no dates for conversion in sheet ", sheet)
+      return(df)
+    })
   return(df)
 }
 

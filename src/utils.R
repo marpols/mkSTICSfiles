@@ -13,7 +13,7 @@ read_sheet <- function(sheet,
 
 invalid_sheets <- function(sheets){
   list <- tolower(sheets) %in% valid_sheets
-  !list
+  return(!list)
 }
 
 
@@ -40,6 +40,24 @@ get_code_choice <- function(df){
   }) 
   return(df)
 }
+
+unit_check <- function(df, unit){
+  is_unit <- data.frame(lapply(df, function(x) {
+    x_val <- x == unit
+  }))
+  cells <- which(is_unit == TRUE, arr.ind = TRUE)
+  cells[,2] <- cells[,2]-1
+  return(cells)
+}
+
+get_empty_vals <- function(df, value){
+  return(which(is.na(df[value])))
+}
+
+missing_value <- function(value, calc){
+  return(sprintf("%s is needed to calculate %s but is empty", value, calc)) 
+}
+
 
 save_csv <- function(sheet,
                      df,

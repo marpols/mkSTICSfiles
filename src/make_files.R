@@ -18,7 +18,7 @@ make_files <- function(sheet,
     
     df <- df |>
       mutate(across(everything(), ~ gsub("-", "", as.character(.))))
-    message("spaces and hyphens are not valid in file names and have been removed or replaced")
+    warning("spaces and hyphens are not valid in STICS file names and have been removed or replaced")
   }
   
   if (tolower(sheet) %in% c("usms")){ #USMS
@@ -40,6 +40,8 @@ make_files <- function(sheet,
              m))
     
   } else if (tolower(sheet) %in% c("ini","init")){ #INI
+    
+    stop("This is an error test")
     
     df$Ini_name <- add_ext(df$Ini_name,"ini")
     
@@ -77,19 +79,25 @@ make_files <- function(sheet,
   
 }
 
-get_values <- function(sheet,
+pop_values <- function(sheet,
                             excel_path,
                             outdir
 ){
   
-  xl_sheet <- read_sheet(sheet, excel_path) |>
-    convert_dates() |>
+  xl_sheet_org <- read_sheet(sheet, excel_path)
+  xl_sheet <- xl_sheet_org |>
+    convert_dates(sheet) |>
     get_code_choice()
   
+  if(sheet == "soils"){
+    
+  } else if (sheet == ""){
+    
+  }
+  
   temp <- read.csv("data/var-values.csv")
-  
-  
-  
-  
-  
 }
+  
+  
+
+  
